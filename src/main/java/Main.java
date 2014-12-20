@@ -41,6 +41,7 @@ public class Main extends HttpServlet {
 
       resp.getWriter().print(out);
     } catch (Exception e) {
+      e.printStackTrace();
       resp.getWriter().print("There was an error: " + e.getMessage());
     }
   }
