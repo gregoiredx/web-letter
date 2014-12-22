@@ -1,12 +1,14 @@
 package ggd.webletter;
 
-import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.glassfish.jersey.servlet.ServletContainer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+
+import java.net.URI;
 
 public class WebServer {
 
@@ -16,38 +18,66 @@ public class WebServer {
         this.server = server;
     }
 
+    public static WebServer create() {
+        return create(null);
+    }
+
     public static WebServer create(Integer port) {
-        Server server = new Server(port);
+        Server server = port == null ? new Server(0) : new Server(port);
         server.setHandler(servletContextHandler(getContext()));
         return new WebServer(server);
     }
 
     private static ServletContextHandler servletContextHandler(WebApplicationContext context) {
-      ServletContextHandler contextHandler = new ServletContextHandler();
-      contextHandler.addServlet(new ServletHolder(new SpringServlet()), "/*");
-      contextHandler.addEventListener(new ContextLoaderListener(context));
-  //    contextHandler.setResourceBase(new ClassPathResource("webapp").getURI().toString());
-      return contextHandler;
+        ServletContextHandler contextHandler = new ServletContextHandler();
+        ServletHolder servletHolder = new ServletHolder(new JerseySpringServletContainer(context));
+        contextHandler.addServlet(servletHolder, "/*");
+        contextHandler.addEventListener(new ContextLoaderListener(context));
+        //    contextHandler.setResourceBase(new ClassPathResource("webapp").getURI().toString());
+        return contextHandler;
     }
 
     private static WebApplicationContext getContext() {
-      AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-      context.scan(Main.class.getPackage().getName());
-      return context;
+        AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
+        context.scan(Main.class.getPackage().getName());
+        context.refresh();
+        return context;
+    }
+
+    public void startAndWait() {
+        start();
+        join();
     }
 
     public void start() {
-        start(false);
+        tryTo(Server::start);
     }
 
-    public void start(boolean background) {
+    private void join() {
+        tryTo(Server::join);
+    }
+
+    public void stop() {
+        tryTo(Server::stop);
+    }
+
+    public URI getBaseUrl() {
+        return server.getURI();
+//        int port = ((ServerConnector) server.getConnectors()[0]).getLocalPort();
+//        return URI.create("http://localhost:" + port);
+    }
+
+    @FunctionalInterface
+    private static interface ServerAction {
+        void perform(Server server) throws Exception;
+    }
+
+    private void tryTo(ServerAction serverAction) {
         try {
-            server.start();
-            if(! background){
-                server.join();
-            }
+            serverAction.perform(server);
         } catch (Exception e) {
-            throw new RuntimeException("Coulld not start server", e);
+            throw new RuntimeException("Could not perform action on server", e);
         }
     }
+
 }

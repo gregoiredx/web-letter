@@ -13,8 +13,10 @@ import java.util.List;
 
 @Named
 @Resource
-@Path("/tick")
+@Path(TickResource.PATH)
 public class TickResource {
+
+    public static final String PATH = "/tick";
 
     @PersistenceContext
     private EntityManager entityManager;
