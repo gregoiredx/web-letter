@@ -6,6 +6,9 @@
     <groupId>ggd</groupId>
     <version>1-SNAPSHOT</version>
     <artifactId>web-letter</artifactId>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
