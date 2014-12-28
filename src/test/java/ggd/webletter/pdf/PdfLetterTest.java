@@ -1,11 +1,9 @@
 package ggd.webletter.pdf;
 
 import com.lowagie.text.DocumentException;
+import ggd.webletter.LetterFactory;
 import ggd.webletter.PdfReader;
-import ggd.webletter.model.Closing;
 import ggd.webletter.model.Letter;
-import ggd.webletter.model.Person;
-import ggd.webletter.model.Salutation;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Rule;
@@ -21,19 +19,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PdfLetterTest {
 
-    private final String body = "hello world";
-    private Salutation salutation = new Salutation("Hi");
-    private Closing closing = new Closing("Bye");
-    private Person receiver = new Person("receiver", "receiver address");
-    private Person sender = new Person("sender", "sender address");
-    private Letter letter;
 
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
+    private Letter letter;
+
     @Before
     public void before() {
-        letter = Letter.create(sender, receiver, salutation, closing, body);
+        letter = LetterFactory.create();
     }
 
     @Test
@@ -59,6 +53,6 @@ public class PdfLetterTest {
 
         new PdfLetter(letter).writeToFile(fileName);
 
-        assertThat(PdfReader.toString(new FileInputStream(fileName))).contains(body);
+        assertThat(PdfReader.toString(new FileInputStream(fileName))).contains(letter.getBody());
     }
 }

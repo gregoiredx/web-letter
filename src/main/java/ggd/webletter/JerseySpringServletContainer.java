@@ -5,6 +5,8 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import org.springframework.beans.factory.ListableBeanFactory;
 
 import javax.ws.rs.Path;
+import javax.ws.rs.ext.Provider;
+import java.lang.annotation.Annotation;
 import java.util.Map;
 
 public class JerseySpringServletContainer extends ServletContainer {
@@ -16,7 +18,12 @@ public class JerseySpringServletContainer extends ServletContainer {
     public static class JerseyApplication extends ResourceConfig {
 
         public JerseyApplication(ListableBeanFactory listableBeanFactory) {
-            Map<String, Object> resources = listableBeanFactory.getBeansWithAnnotation(Path.class);
+            registerBeansWithAnnotation(listableBeanFactory, Path.class);
+            registerBeansWithAnnotation(listableBeanFactory, Provider.class);
+        }
+
+        private void registerBeansWithAnnotation(ListableBeanFactory listableBeanFactory, Class<? extends Annotation> anAnnotation) {
+            Map<String, Object> resources = listableBeanFactory.getBeansWithAnnotation(anAnnotation);
             for (Map.Entry<String, Object> resource : resources.entrySet()) {
                 System.out.println("Adding resource " + resource.getKey());
                 register(resource.getValue());
