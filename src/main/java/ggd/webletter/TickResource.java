@@ -24,7 +24,7 @@ public class TickResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     @Transactional
-    public String tick(){
+    public String tick() {
         Tick newTick = new Tick();
         entityManager.persist(newTick);
         entityManager.flush();

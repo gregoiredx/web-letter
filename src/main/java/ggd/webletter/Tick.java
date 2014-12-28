@@ -9,10 +9,10 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name="ticks")
+@Table(name = "ticks")
 public class Tick {
 
-    public Tick(){
+    public Tick() {
         id = UUID.randomUUID().toString();
         tick = new Date();
     }

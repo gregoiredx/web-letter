@@ -9,7 +9,7 @@ import javax.ws.rs.Path;
 public class OkResource {
 
     @GET
-    public String get(){
+    public String get() {
         return "ok";
     }
 
