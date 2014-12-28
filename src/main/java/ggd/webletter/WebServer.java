@@ -1,13 +1,18 @@
 package ggd.webletter;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
+import javax.servlet.DispatcherType;
+import java.io.IOException;
 import java.net.URI;
+import java.util.EnumSet;
 
 public class WebServer {
 
@@ -32,7 +37,6 @@ public class WebServer {
         ServletHolder servletHolder = new ServletHolder(new JerseySpringServletContainer(context));
         contextHandler.addServlet(servletHolder, "/*");
         contextHandler.addEventListener(new ContextLoaderListener(context));
-        //    contextHandler.setResourceBase(new ClassPathResource("webapp").getURI().toString());
         return contextHandler;
     }
 

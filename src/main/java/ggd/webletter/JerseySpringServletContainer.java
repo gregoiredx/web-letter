@@ -1,6 +1,7 @@
 package ggd.webletter;
 
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.mvc.freemarker.FreemarkerMvcFeature;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.springframework.beans.factory.ListableBeanFactory;
 
@@ -20,6 +21,8 @@ public class JerseySpringServletContainer extends ServletContainer {
         public JerseyApplication(ListableBeanFactory listableBeanFactory) {
             registerBeansWithAnnotation(listableBeanFactory, Path.class);
             registerBeansWithAnnotation(listableBeanFactory, Provider.class);
+            property(FreemarkerMvcFeature.TEMPLATES_BASE_PATH, "templates");
+            register(FreemarkerMvcFeature.class);
         }
 
         private void registerBeansWithAnnotation(ListableBeanFactory listableBeanFactory, Class<? extends Annotation> anAnnotation) {
