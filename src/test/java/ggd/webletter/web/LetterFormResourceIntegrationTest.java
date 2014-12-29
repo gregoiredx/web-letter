@@ -24,4 +24,18 @@ public class LetterFormResourceIntegrationTest {
         assertThat(response.readEntity(String.class)).contains("form name=\"letterForm\"");
     }
 
+    @Test
+    public void returnsHttpUrlIfServerHasNoSsl(){
+        Response response = server.getTarget().path(LetterFormResource.PATH).request().get();
+
+        assertThat(response.readEntity(String.class)).contains(server.getBaseUrl().toString() + PdfLetterResource.PATH);
+    }
+
+    @Test
+    public void returnsHttpsUrlIfProxiedFromLoadBalancer(){
+        Response response = server.getTarget().path(LetterFormResource.PATH).request().header("X-Forwarded-Proto", "https").get();
+
+        assertThat(response.readEntity(String.class)).contains(server.getBaseUrl().toString().replace("http", "https") + PdfLetterResource.PATH);
+    }
+
 }

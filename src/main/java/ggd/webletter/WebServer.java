@@ -1,7 +1,6 @@
 package ggd.webletter;
 
-import org.eclipse.jetty.server.Handler;
-import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
@@ -28,11 +27,11 @@ public class WebServer {
     }
 
     public static WebServer create() {
-        return create(null);
+        return create(0);
     }
 
-    public static WebServer create(Integer port) {
-        Server server = port == null ? new Server(0) : new Server(port);
+    public static WebServer create(int port) {
+        Server server = createServer(port);
         HandlerList handlers = new HandlerList();
         handlers.addHandler(staticResourcesHandler());
         handlers.addHandler(servletContextHandler(getContext()));
@@ -40,10 +39,19 @@ public class WebServer {
         return new WebServer(server);
     }
 
+    private static Server createServer(int port) {
+        Server server = new Server();
+        HttpConfiguration httpConfiguration = new HttpConfiguration();
+        httpConfiguration.addCustomizer(new ForwardedRequestCustomizer());
+        ServerConnector serverConnector = new ServerConnector(server, new HttpConnectionFactory(httpConfiguration));
+        serverConnector.setPort(port);
+        server.addConnector(serverConnector);
+        return server;
+    }
+
     private static Handler staticResourcesHandler() {
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setDirectoriesListed(true);
-        resourceHandler.setWelcomeFiles(new String[]{"index.html"});
         resourceHandler.setBaseResource(Resource.newClassPathResource("static"));
         ContextHandler contextHandler = new ContextHandler("/static");
         contextHandler.setHandler(resourceHandler);
