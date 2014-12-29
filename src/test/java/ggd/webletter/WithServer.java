@@ -2,6 +2,8 @@ package ggd.webletter;
 
 import org.junit.rules.ExternalResource;
 
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import java.net.URI;
 
 public class WithServer extends ExternalResource {
@@ -22,5 +24,9 @@ public class WithServer extends ExternalResource {
 
     public URI getBaseUrl() {
         return webServer.getBaseUrl();
+    }
+
+    public WebTarget getTarget() {
+        return ClientBuilder.newClient().target(getBaseUrl());
     }
 }

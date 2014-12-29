@@ -1,10 +1,14 @@
 package ggd.webletter;
 
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.springframework.core.io.ClassPathResource;
+import org.eclipse.jetty.util.resource.Resource;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -12,6 +16,7 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import javax.servlet.DispatcherType;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.EnumSet;
 
 public class WebServer {
@@ -28,8 +33,21 @@ public class WebServer {
 
     public static WebServer create(Integer port) {
         Server server = port == null ? new Server(0) : new Server(port);
-        server.setHandler(servletContextHandler(getContext()));
+        HandlerList handlers = new HandlerList();
+        handlers.addHandler(staticResourcesHandler());
+        handlers.addHandler(servletContextHandler(getContext()));
+        server.setHandler(handlers);
         return new WebServer(server);
+    }
+
+    private static Handler staticResourcesHandler() {
+        ResourceHandler resourceHandler = new ResourceHandler();
+        resourceHandler.setDirectoriesListed(true);
+        resourceHandler.setWelcomeFiles(new String[]{"index.html"});
+        resourceHandler.setBaseResource(Resource.newClassPathResource("static"));
+        ContextHandler contextHandler = new ContextHandler("/static");
+        contextHandler.setHandler(resourceHandler);
+        return contextHandler;
     }
 
     private static ServletContextHandler servletContextHandler(WebApplicationContext context) {
@@ -65,9 +83,12 @@ public class WebServer {
     }
 
     public URI getBaseUrl() {
-        return server.getURI();
-//        int port = ((ServerConnector) server.getConnectors()[0]).getLocalPort();
-//        return URI.create("http://localhost:" + port);
+        URI uri = server.getURI();
+        try {
+            return new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), null, null, null);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Could not build server URI", e);
+        }
     }
 
     @FunctionalInterface

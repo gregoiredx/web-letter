@@ -23,7 +23,7 @@ public class PdfLetterResourceIntegrationTest {
         Form form = new Form();
         form.param("closing", "Cordialement");
         Entity<Form> entity = Entity.form(form);
-        return ClientBuilder.newClient().target(server.getBaseUrl()).path(PdfLetterResource.PATH).request().post(entity);
+        return server.getTarget().path(PdfLetterResource.PATH).request().post(entity);
     }
 
     @Test

@@ -18,7 +18,7 @@ public class LetterFormResourceIntegrationTest {
 
     @Test
     public void canGet() {
-        Response response = ClientBuilder.newClient().target(server.getBaseUrl()).path(LetterFormResource.PATH).request().get();
+        Response response = server.getTarget().path(LetterFormResource.PATH).request().get();
 
         assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_OK);
         assertThat(response.readEntity(String.class)).contains("form name=\"letterForm\"");
