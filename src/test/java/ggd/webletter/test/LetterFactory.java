@@ -1,4 +1,4 @@
-package ggd.webletter;
+package ggd.webletter.test;
 
 import ggd.webletter.model.Closing;
 import ggd.webletter.model.Letter;

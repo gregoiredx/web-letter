@@ -2,20 +2,30 @@ package ggd.webletter.model;
 
 import com.google.common.collect.Lists;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
+import java.util.Arrays;
 import java.util.List;
 
-public class User {
+@Entity
+public class Account {
 
     @Id
     private String name;
+
+    private String credentials;
+
+    @Transient
     List<Letter> letters;
 
-    private User() {
+    private Account() {
+        // JPA
     }
 
-    public User(String name) {
+    public Account(String name, String credentials) {
         this.name = name;
+        this.credentials = credentials;
     }
 
     public void addLetter(Letter letter) {
@@ -27,6 +37,14 @@ public class User {
             letters = Lists.newArrayList();
         }
         return letters;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCredentials() {
+        return credentials;
     }
 
 }

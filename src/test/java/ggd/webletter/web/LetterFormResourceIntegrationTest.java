@@ -1,12 +1,11 @@
 package ggd.webletter.web;
 
 
-import ggd.webletter.WithServer;
+import ggd.webletter.test.WithServer;
 import org.junit.ClassRule;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -1,4 +1,4 @@
-package ggd.webletter;
+package ggd.webletter.config;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.mvc.MvcFeature;
@@ -31,7 +31,6 @@ public class JerseySpringServletContainer extends ServletContainer {
         private void registerBeansWithAnnotation(ListableBeanFactory listableBeanFactory, Class<? extends Annotation> anAnnotation) {
             Map<String, Object> resources = listableBeanFactory.getBeansWithAnnotation(anAnnotation);
             for (Map.Entry<String, Object> resource : resources.entrySet()) {
-                System.out.println("Adding resource " + resource.getKey());
                 register(resource.getValue());
             }
         }

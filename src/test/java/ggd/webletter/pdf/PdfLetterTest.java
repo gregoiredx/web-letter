@@ -1,8 +1,8 @@
 package ggd.webletter.pdf;
 
 import com.lowagie.text.DocumentException;
-import ggd.webletter.LetterFactory;
-import ggd.webletter.PdfReader;
+import ggd.webletter.test.LetterFactory;
+import ggd.webletter.test.PdfReader;
 import ggd.webletter.model.Letter;
 import org.joda.time.LocalDate;
 import org.junit.Before;

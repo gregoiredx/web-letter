@@ -1,5 +1,6 @@
-package ggd.webletter;
+package ggd.webletter.config;
 
+import ggd.webletter.Main;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -11,9 +12,9 @@ import org.eclipse.jetty.util.resource.Resource;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.filter.DelegatingFilterProxy;
 
 import javax.servlet.DispatcherType;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.EnumSet;
@@ -34,7 +35,7 @@ public class WebServer {
         Server server = createServer(port);
         HandlerList handlers = new HandlerList();
         handlers.addHandler(staticResourcesHandler());
-        handlers.addHandler(servletContextHandler(getContext()));
+        handlers.addHandler(servletContextHandler(getSpringContext()));
         server.setHandler(handlers);
         return new WebServer(server);
     }
@@ -63,10 +64,13 @@ public class WebServer {
         ServletHolder servletHolder = new ServletHolder(new JerseySpringServletContainer(context));
         contextHandler.addServlet(servletHolder, "/*");
         contextHandler.addEventListener(new ContextLoaderListener(context));
+        contextHandler.addFilter(
+                new FilterHolder(new DelegatingFilterProxy("springSecurityFilterChain")), "/*",
+                EnumSet.allOf(DispatcherType.class));
         return contextHandler;
     }
 
-    private static WebApplicationContext getContext() {
+    private static WebApplicationContext getSpringContext() {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.scan(Main.class.getPackage().getName());
         context.refresh();

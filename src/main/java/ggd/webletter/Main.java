@@ -1,5 +1,7 @@
 package ggd.webletter;
 
+import ggd.webletter.config.WebServer;
+
 public class Main {
 
     public static void main(String[] args) {

@@ -1,5 +1,6 @@
-package ggd.webletter;
+package ggd.webletter.config;
 
+import ggd.webletter.Main;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;

@@ -1,5 +1,6 @@
-package ggd.webletter;
+package ggd.webletter.test;
 
+import ggd.webletter.config.WebServer;
 import org.junit.rules.ExternalResource;
 
 import javax.ws.rs.client.ClientBuilder;

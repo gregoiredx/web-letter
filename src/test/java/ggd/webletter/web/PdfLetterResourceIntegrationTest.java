@@ -1,11 +1,10 @@
 package ggd.webletter.web;
 
-import ggd.webletter.PdfReader;
-import ggd.webletter.WithServer;
+import ggd.webletter.test.PdfReader;
+import ggd.webletter.test.WithServer;
 import org.junit.ClassRule;
 import org.junit.Test;
 
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.Response;
