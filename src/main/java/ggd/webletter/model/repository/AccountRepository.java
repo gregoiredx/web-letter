@@ -19,4 +19,8 @@ public class AccountRepository {
     public void persist(Account account) {
         entityManager.persist(account);
     }
+
+    public void remove(Account account) {
+        entityManager.remove(account);
+    }
 }

@@ -1,6 +1,7 @@
 package ggd.webletter.test;
 
 import ggd.webletter.config.WebServer;
+import org.glassfish.jersey.client.ClientProperties;
 import org.junit.rules.ExternalResource;
 
 import javax.ws.rs.client.ClientBuilder;
@@ -28,6 +29,6 @@ public class WithServer extends ExternalResource {
     }
 
     public WebTarget getTarget() {
-        return ClientBuilder.newClient().target(getBaseUrl());
+        return ClientBuilder.newClient().property(ClientProperties.FOLLOW_REDIRECTS, false).target(getBaseUrl());
     }
 }

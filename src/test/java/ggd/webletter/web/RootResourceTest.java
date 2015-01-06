@@ -18,7 +18,7 @@ public class RootResourceTest {
 
     @Test
     public void canGet() {
-        Response response = server.getTarget().property(ClientProperties.FOLLOW_REDIRECTS, false).request().get();
+        Response response = server.getTarget().request().get();
 
         assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_SEE_OTHER);
     }
