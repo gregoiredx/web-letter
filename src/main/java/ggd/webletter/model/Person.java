@@ -1,11 +1,13 @@
 package ggd.webletter.model;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+
 public class Person {
 
     private String name;
     private String address;
 
-    @SuppressWarnings("unused")
     private Person() {
     }
 

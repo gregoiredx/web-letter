@@ -1,11 +1,12 @@
 package ggd.webletter.model;
 
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Id;
 
 public class Salutation {
 
-    @Id
     private String text;
 
     private Salutation() {

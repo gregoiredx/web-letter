@@ -13,6 +13,20 @@
             font-weight: normal !important;
         }
     </style>
+    <script>
+        $(function() {
+            $("#save").click(function(event){
+                event.preventDefault();
+                $.post( "${saveLetterUrl}", $("#letterForm").serialize())
+                .done(function(data) {
+                    alert( "second success" + data);
+                })
+                .fail(function( jqXHR, textStatus, errorThrown) {
+                    alert( "error" + textStatus);
+                });
+            });
+        });
+    </script>
 </head>
 <body>
 
@@ -24,7 +38,7 @@
         </div>
     </nav>
 
-    <form name="letterForm" action="${pdfLetterUrl}" method="post" target="_blank" class="form-horizontal">
+    <form id="letterForm" name="letterForm" action="${pdfLetterUrl}" method="post" target="_blank" class="form-horizontal">
         <div class="form-group">
             <label for="sender_name" class="col-sm-2 control-label">Nom de l'expediteur:</label>
             <div class="col-sm-10">
@@ -69,6 +83,9 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
+                <#if userPrincipal??>
+                    <button id="save" class="btn btn-default">save</button>
+                </#if>
                 <input name="submit" type="submit" class="btn btn-default" value="pdf" />
             </div>
         </div>

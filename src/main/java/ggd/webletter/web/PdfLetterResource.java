@@ -18,9 +18,9 @@ public class PdfLetterResource {
                             @FormParam("receiver_name") @DefaultValue("") String receiverName,
                             @FormParam("receiver_address") @DefaultValue("") String receiverAddress,
                             @FormParam("salutation") @DefaultValue("") String salutation,
-                            @FormParam("body") @DefaultValue("") String body, @FormParam("closing") @DefaultValue("") String closing) {
-        return Letter.createFromParams(senderName, senderAddress, receiverName, receiverAddress, salutation, body,
-                closing);
+                            @FormParam("body") @DefaultValue("") String body,
+                            @FormParam("closing") @DefaultValue("") String closing) {
+        return Letter.createFromParams(senderName, senderAddress, receiverName, receiverAddress, salutation, body, closing);
     }
 
 }

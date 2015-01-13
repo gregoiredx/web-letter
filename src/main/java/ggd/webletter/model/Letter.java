@@ -2,25 +2,49 @@ package ggd.webletter.model;
 
 import org.joda.time.LocalDate;
 
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.UUID;
 
+@Entity
 public class Letter {
 
     @Id
     private String id;
 
+    @AttributeOverrides({
+            @AttributeOverride(name="name",column=@Column(name="senderName")),
+            @AttributeOverride(name="address",column=@Column(name="senderAddress"))
+            })
+    @Embedded
     private Person sender;
 
+    @AttributeOverrides({
+            @AttributeOverride(name="name",column=@Column(name="receiverName")),
+            @AttributeOverride(name="address",column=@Column(name="receiverAddress"))
+    })
+    @Embedded
     private Person receiver;
 
-    private Salutation salutation;
-
+    @Column(columnDefinition = "date")
     private Date date;
 
+    @AttributeOverrides({
+            @AttributeOverride(name="text",column=@Column(name="salutation"))
+    })
+    @Embedded
+    private Salutation salutation;
+
+    @AttributeOverrides({
+            @AttributeOverride(name="text",column=@Column(name="closing"))
+    })
+    @Embedded
     private Closing closing;
 
     private String body;
+
+    @ManyToOne
+    private Account account;
 
     private Letter() {
     }
@@ -49,6 +73,7 @@ public class Letter {
     }
 
     private Letter(Person sender, Person receiver, Salutation salutation, Closing closing, LocalDate date, String body) {
+        this.id = UUID.randomUUID().toString();
         this.sender = sender;
         this.receiver = receiver;
         this.salutation = salutation;
@@ -93,4 +118,7 @@ public class Letter {
         this.id = id;
     }
 
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 }

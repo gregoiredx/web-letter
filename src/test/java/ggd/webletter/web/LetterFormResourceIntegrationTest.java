@@ -20,7 +20,7 @@ public class LetterFormResourceIntegrationTest {
         Response response = server.getTarget().path(LetterFormResource.PATH).request().get();
 
         assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_OK);
-        assertThat(response.readEntity(String.class)).contains("form name=\"letterForm\"");
+        assertThat(response.readEntity(String.class)).contains("form id=\"letterForm\"");
     }
 
     @Test

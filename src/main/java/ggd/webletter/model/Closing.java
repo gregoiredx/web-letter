@@ -1,11 +1,11 @@
 package ggd.webletter.model;
 
 
+import javax.persistence.Embeddable;
 import javax.persistence.Id;
 
 public class Closing {
 
-    @Id
     private String text;
 
     private Closing() {

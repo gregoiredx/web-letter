@@ -21,9 +21,10 @@ public class LetterFormResource {
     @Template(name = "/letterForm")
     public Map<String, Object> get(@Context UriInfo uriInfo, @Context SecurityContext securityContext) {
         Map<String, Object> context = Maps.newHashMap();
-        context.put("userPrincipal", securityContext.getUserPrincipal() == null ? null : securityContext.getUserPrincipal().getName());
+        context.put("userPrincipal", securityContext.getUserPrincipal());
         context.put("staticUrl", "/static");
         context.put("pdfLetterUrl", uriInfo.getBaseUriBuilder().path(PdfLetterResource.class).build());
+        context.put("saveLetterUrl",  uriInfo.getBaseUriBuilder().path(LetterResource.class).build());
         return context;
     }
 }
