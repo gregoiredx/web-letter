@@ -1,6 +1,6 @@
 package ggd.webletter.pdf;
 
-import com.lowagie.text.DocumentException;
+import com.itextpdf.text.DocumentException;
 import ggd.webletter.test.LetterFactory;
 import ggd.webletter.test.PdfReader;
 import ggd.webletter.model.Letter;
